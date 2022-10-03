@@ -1,0 +1,24 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Impostazioni</h1>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4 class="panel-title">Utente</h4></div>
+            <div class="panel-body">
+                <h4 class="wrap"><i class="glyphicon glyphicon-user"></i> {{ user.nickname }}</h4>
+                <p>Data di registrazione: {{ user.signupTime | date('d/m/Y G:i') }}</p>
+                <p>Data di accesso: {{ user.signinTime | date('d/m/Y G:i') }}</p>
+                <p>Data di ultimo accesso: {% if user.lastSigninTime is not null %}{{ user.lastSigninTime | date('d/m/Y G:i') }}{% else %}Mai{% endif %}</p>
+                <p><i>
+                    Le funzioni di modifica nickname/password e di recupero password verranno implementate nelle versioni successive dell'applicazione.</br>
+                    Al momento, per richiedere tali funzioni, <a href="{{ path_for('contact-us') }}">rivolgersi all'amministratore</a>.
+                </i></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

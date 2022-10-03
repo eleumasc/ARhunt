@@ -1,0 +1,69 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="active">Media</li>
+    </ol>
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+    <div class="well">
+        <p><b>
+            Carica un file multimediale da aggiungere agli indizi.</br>
+            Puoi caricare file della dimensione massima di 15 MB fino a 32 MB totali per caccia.</br>
+            Sono accettati solo file dei seguenti tipi:</br>
+            <ul>
+                <li>Immagini (.bmp, .svg, .jpg, .jpeg, .png, .gif)</li>
+                <li>Audio (.mp3)</li>
+                <li>Video (.mp4)</li>
+            </ul>
+        </b></p>
+        <form method="post" action="{{ path_for('media-upload') }}" enctype="multipart/form-data">
+            <input type="hidden" name="hunt" value="{{ hunt.id }}">
+            <div class="input-group">
+                <input type="file" class="form-control" name="file" required>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-open"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <div>
+        <p>{{ usedSpace }} B di {{ maxSpace }} B utilizzati</p>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ 100 * usedSpace // maxSpace }}%;">
+                {{ 100 * usedSpace // maxSpace }}%
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+        <tbody>
+            {% for m in media %}
+            <tr data-bind="{{ m.id }}">
+                <td><i class="glyphicon glyphicon-{{ m.type == 'image' ? 'picture' : m.type == 'audio' ? 'volume-up' : m.type == 'video' ? 'facetime-video' : '' }}"></i></td>
+                <td data-bind="name">{{ m.name }}</td>
+                <td>{{ m.length }} B</td>
+                <td>
+                    <a href="{{ path_for('media-download', { id: m.id }) }}">
+                        <button class="btn btn-link" title="Vedi"><i class="glyphicon glyphicon-eye-open"></i></button></a>
+                    <a href="{{ path_for('media-download', { id: m.id }) }}" download="{{ m.filename }}">
+                        <button class="btn btn-link" title="Salva"><i class="glyphicon glyphicon-save"></i></button></a>
+                    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+                    <button class="btn btn-link" data-action="edit" data-media="{{ m.id }}" title="Modifica"><i class="glyphicon glyphicon-edit"></i></button>
+                    <button class="btn btn-link" data-action="delete" data-media="{{ m.id }}" title="Elimina"><i class="glyphicon glyphicon-remove"></i></button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+<script>
+var AJAX_MEDIA_EDIT_PATH = '{{ path_for('ajax-media-edit') }}',
+    AJAX_MEDIA_DELETE_PATH = '{{ path_for('ajax-media-delete') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/media-list.js"></script>
+{% endblock %}

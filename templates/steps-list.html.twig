@@ -1,0 +1,59 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="wrap"><a href="{{ path_for('teams-list', { hunt: hunt.id }) }}">{{ team.name }}</a></li>
+        <li class="active">Percorso</li>
+    </ol>
+    <div class="map-container">
+        <div id="stepsMap" class="map"></div>
+    </div>
+    <div>
+        <p>Lunghezza percorso in linea d'aria: <b>{{ pathLength }} metri</b></p>
+    </div>
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+    <div class="form-group text-right">
+        <a href="{{ path_for('steps-add', { team: team.id }) }}">
+            <button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Nuovo passo</button></a>
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+        <tbody>
+            {% for step in steps %}
+            <tr data-bind="{{ step.sequence }}">
+                <td>{{ step.sequence }}</td>
+                <td><p class="pre-wrap" style="min-width: 300px; max-width: 508px;">{{ step.text }}</p></td>
+                {% if step.media is not null %}
+                <td><i class="glyphicon glyphicon-{{ step.media.type == 'image' ? 'picture' : step.media.type == 'audio' ? 'volume-up' : step.media.type == 'video' ? 'facetime-video' : '' }}"></i></td>
+                <td>{{ step.media.name }}</td>
+                {% else %}
+                <td colspan="2">(Nessun media)</td>
+                {% endif %}
+                <td>
+                    <a href="{{ path_for('questions-list', { team: step.team, sequence: step.sequence }) }}">
+                        <button class="btn btn-link" title="Vedi domande"><i class="glyphicon glyphicon-eye-open"></i></button></a>
+                    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+                    <button class="btn btn-link" data-action="move-up" data-sequence="{{ step.sequence }}" title="Sposta su"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                    <button class="btn btn-link" data-action="move-down" data-sequence="{{ step.sequence }}" title="Sposta gi&ugrave;"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                    <a href="{{ path_for('steps-edit', { team: step.team, sequence: step.sequence }) }}">
+                        <button class="btn btn-link" title="Modifica"><i class="glyphicon glyphicon-edit"></i></button></a>
+                    <button class="btn btn-link" data-action="delete" data-sequence="{{ step.sequence }}" title="Elimina"><i class="glyphicon glyphicon-remove"></i></button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+<script>
+var TEAM_ID = '{{ team.id }}',
+    PATH = [[{{ hunt.callLat}}, {{ hunt.callLng }}], {% for step in steps %}[{{ step.takeLat }}, {{ step.takeLng }}], {% endfor %}],
+    AJAX_STEPS_DELETE_PATH = '{{ path_for('ajax-steps-delete') }}',
+    AJAX_STEPS_MOVE_PATH = '{{ path_for('ajax-steps-move') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/steps-list.js"></script>
+{% endblock %}

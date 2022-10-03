@@ -1,0 +1,9 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+{% if __user.lastSigninTime is null %}
+<h1 class="wrap">Benvenuto, {{ __user.nickname }}!</h1>
+{% else %}
+<h1 class="wrap">Ben tornato, {{ __user.nickname }}!</h1>
+{% endif %}
+{% endblock %}

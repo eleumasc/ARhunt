@@ -1,0 +1,24 @@
+{
+    "name": "eleumasc/arhunt",
+    "type": "project",
+    "description": "Play and make outdoor treasure hunt games in augmented reality.",
+    "keywords": ["treasure","hunt","augmented","reality"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Samuele Casarin",
+            "email": "eleumasc@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.2",
+        "monolog/monolog": "^1.17"
+    },
+    "autoload": {
+        "psr-4": {
+            "ARHunt\\": "classes/ARHunt/",
+            "Stdlib\\": "classes/Stdlib/"
+        }
+    }
+}

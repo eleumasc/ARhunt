@@ -1,0 +1,46 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="wrap">{{ hunt.name }}</h1>
+    <h3 class="wrap">di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></h3>
+    <b>{{ hunt.getStatusName() }}</b>
+</div>
+<div class="btn-container">
+    {% if hunt.author == __user.nickname %}
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+    <a href="{{ path_for('hunts-edit', { id: hunt.id }) }}">
+        <button type="button" class="btn btn-primary">Modifica informazioni</button></a>
+    {% endif %}
+    <a href="{{ path_for('media-list', { hunt: hunt.id }) }}">
+        <button type="button" class="btn btn-primary">Media</button></a>
+    <a href="{{ path_for('teams-list', { hunt: hunt.id }) }}">
+        <button type="button" class="btn btn-primary">Percorsi</button></a>
+    {% if hunt.status != constant('\\ARHunt\\Hunt\\Model\\Hunt::CLOSED') and hunt.status != constant('\\ARHunt\\Hunt\\Model\\Hunt::CANCELLED') %}
+    <a href="{{ path_for('hunts-make', { id: hunt.id }) }}">
+        <button type="button" class="btn btn-success">Gestisci</button></a>
+    {% endif %}
+    {% else %}
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::CALLING') or playerExists %}
+    <a href="{{ path_for('hunts-play', { id: hunt.id }) }}">
+        <button type="button" class="btn btn-success">Gioca</button></a>
+    {% endif %}
+    {% endif %}
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::CLOSED') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::CANCELLED') %}
+    <a href="{{ path_for('hunts-result', { id: hunt.id }) }}">
+        <button type="button" class="btn btn-success">Risultato</button></a>
+    {% endif %}
+</div>
+<p><strong>Descrizione</strong/></p>
+<p class="pre-wrap">{{ hunt.description }}</p>
+<p><strong>Quando?</strong/></p>
+<p>{{ hunt.callTime | date('d/m/Y G:i') }}</p>
+<p><strong>Dove?</strong/></p>
+<div class="map-container col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div id="callPosMap" class="map"></div>
+</div>
+<script>
+var HUNT_CALL_POS = [{{ hunt.callLat }}, {{ hunt.callLng }}];
+</script>
+<script src="{{ path_for('root') }}scripts/hunts-view.js"></script>
+{% endblock %}

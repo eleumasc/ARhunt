@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Verifica il tuo indirizzo email</title>
+</head>
+<body>
+    <p>Salve,</p>
+    <p>Grazie per aver effettuato la registrazione a ARhunt.</p>
+    <p>Segui il link seguente per verificare il tuo indirizzo email:</p>
+    <p>
+        <a href="{{ __settings['arhunt']['website']['protocol'] }}://{{ __settings['arhunt']['website']['domain'] }}{{ path_for('verify-email') }}?nickname={{ user.nickname }}&evc={{ user.emailVerificationCode }}">
+            {{ __settings['arhunt']['website']['protocol'] }}://{{ __settings['arhunt']['website']['domain'] }}{{ path_for('verify-email') }}?nickname={{ user.nickname }}&evc={{ user.emailVerificationCode }}
+        </a>
+    </p>
+    <p>Una volta verificato l'indirizzo email, sar&agrave; possibile effettuare il primo accesso a ARhunt.</p>
+    <p>Cordiali saluti,</p>
+    <p>Il team di ARhunt</p>
+</body>
+</html>

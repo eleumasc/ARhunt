@@ -1,0 +1,23 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Crea</h1>
+</div>
+<div class="form-group text-right">
+    <a href="{{ path_for('hunts-add') }}">
+        <button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Nuova caccia</button></a>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+    <tbody>
+        {% for hunt in hunts %}
+            <tr><td>
+                <a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a> ({{ hunt.getStatusName() }})</br>
+                <small>di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></small>
+            </td></tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

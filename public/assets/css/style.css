@@ -1,0 +1,45 @@
+.center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+.wrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
+.pre-wrap {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.2em;
+}
+.breadcrumb > li.wrap {
+    display: initial;
+}
+.header {
+    margin-bottom: 20px;
+}
+.footer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#content {
+    min-height: calc(100vh - 169px);
+}
+.map-container {
+    padding: 0;
+    margin-bottom: 10px;
+}
+.map {
+    width: 100%;
+    height: 300px;
+}
+.choice.disabled {
+    opacity: 1;
+}
+.btn-container {
+    margin: 10px 0;
+}
+.btn-container .btn {
+    margin: 2px;
+    margin-left: 0;
+}

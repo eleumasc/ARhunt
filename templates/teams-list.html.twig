@@ -1,0 +1,40 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="active">Squadre</li>
+    </ol>
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+    <div class="form-group text-right">
+        <a href="{{ path_for('teams-add', { hunt: hunt.id }) }}">
+            <button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Nuova squadra</button></a>
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table">
+        <tbody>
+            {% for team in teams %}
+            <tr style="background-color: #{{ team.color }}; color: #{{ team.getTextColor() }}" data-bind="{{ team.id }}">
+                <td data-bind="name">{{ team.name }}</td>
+                <td>
+                    <a href="{{ path_for('steps-list', { team: team.id }) }}">
+                        <button class="btn btn-link" style="color: #{{ team.getTextColor() }}" title="Vedi percorso"><i class="glyphicon glyphicon-eye-open"></i></button></a>
+                    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+                    <a href="{{ path_for('teams-edit', { id: team.id }) }}">
+                        <button class="btn btn-link" style="color: #{{ team.getTextColor() }}" title="Modifica"><i class="glyphicon glyphicon-edit"></i></button></a>
+                    <button class="btn btn-link" style="color: #{{ team.getTextColor() }}" data-action="delete" data-team="{{ team.id }}" title="Elimina"><i class="glyphicon glyphicon-remove"></i></button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+<script>
+var AJAX_TEAMS_DELETE_PATH = '{{ path_for('ajax-teams-delete') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/teams-list.js"></script>
+{% endblock %}

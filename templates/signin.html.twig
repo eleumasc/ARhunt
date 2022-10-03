@@ -1,0 +1,25 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="well center col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <h2 class="text-center">Accedi</h2>
+    <form id="form-signin">
+        <div class="form-group text-danger" id="error-message"></div>
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input type="text" class="form-control" id="nickname" placeholder="Nickname" pattern="[A-Za-z0-9]{4,24}" required autofocus>
+        </div>
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input type="password" class="form-control" id="password" placeholder="Password" pattern=".{8,128}" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Accedi</button>
+        <span><a href="{{ path_for('signup') }}">Registrati</a></span>
+    </form>
+</div>
+<script>
+var AJAX_SIGNIN_PATH = '{{ path_for('ajax-signin') }}',
+    HOME_PATH = '{{ path_for('home') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/signin.js"></script>
+{% endblock %}

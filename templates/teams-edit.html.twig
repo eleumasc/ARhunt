@@ -1,0 +1,33 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="active">Squadre</li>
+    </ol>
+    <form id="form-team">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" value="{{ team.name }}" required autofocus>
+            <small class="form-text text-muted">
+                Il nome non pu&ograve; essere vuoto e deve essere composto da max. 120 caratteri.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="color">Colore</label>
+            <input type="color" class="form-control" id="color" value="#{{ team.color }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Salva</button>
+        <span><a href="javascript:history.back()">Indietro</a></span>
+    </form>
+</div>
+<script>
+var ACTION = '{{ action }}',
+    AJAX_ACTION_PATH = '{{ path_for("ajax-teams-#{action}") }}',
+    HUNT_ID = '{{ hunt.id }}',
+    TEAM_ID = '{{ team.id }}',
+    TEAMS_LIST_PATH = '{{ path_for('teams-list', { hunt: hunt.id }) }}';
+</script>
+<script src="{{ path_for('root') }}scripts/teams-edit.js"></script>
+{% endblock %}

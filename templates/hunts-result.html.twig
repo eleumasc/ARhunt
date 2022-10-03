@@ -1,0 +1,63 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="active">Risultato</li>
+    </ol>
+    <div class="text-center">
+        <h1 class="wrap">{{ hunt.name }}</h1>
+        <h3 class="wrap">di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></h3>
+        <b>{{ hunt.getStatusName() }}</b>
+    </div>
+    <div class="text-center">
+        <h1>Risultato</h1>
+    </div>
+    <div class="panel-group" id="accordion">
+    {% for ranking, team in teams %}
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #{{ team.color }}; color: #{{ team.getTextColor() }}">
+                <div class="panel-title">
+                    <h4 class="badge">{% if team.closed %}{{ ranking }}{% else %}NC{% endif %}</h4>
+                    <h4 class="wrap" style="cursor: pointer;" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ ranking }}">{{ team.name }}</p>
+                </div>
+            </div>
+            <div id="collapse{{ ranking }}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Giocatore</th>
+                                <th>PP</th>
+                                <th>RC</th>
+                                <th>RS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in team.stats %}
+                                <tr>
+                                    <td>{{ player['player'] }}</td>
+                                    <td>{{ player['stepsTaken'] }}</td>
+                                    <td>{{ player['rightChoicesPicked'] }}</td>
+                                    <td>{{ player['wrongChoicesPicked'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+      </div>
+    {% endfor %}
+    </div>
+    <div class="well">
+        <p><b>Seleziona il nome di una squadra per consultare le statistiche dei giocatori.</b></p>
+        <p><b>NC</b>: Non Classificata</p>
+        <p><b>PP</b>: Passi Presi</p>
+        <p><b>RC</b>: Risposte Corrette</p>
+        <p><b>RS</b>: Risposte Sbagliate</p>
+    </div>
+</div>
+{% endblock %}

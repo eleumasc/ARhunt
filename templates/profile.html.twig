@@ -1,0 +1,73 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<form id="form-search">
+    <div class="form-group input-group">
+        <input type="text" class="form-control" id="search" placeholder="Cerca..." pattern="[A-Za-z0-9]{4,24}" required>
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+    </div>
+</form>
+{% if user.nickname != __user.nickname %}
+<p class="text-right">
+    <a href="{{ path_for('profile') }}">Il mio profilo</a>
+</p>
+{% endif %}
+<div class="text-center">
+    <h1 class="wrap"><i class="glyphicon glyphicon-user"></i> {{ user.nickname }}</h1>
+</div>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#tab-summary">Riepilogo</a></li>
+    <li><a data-toggle="tab" href="#tab-open">Aperte</a></li>
+    <li><a data-toggle="tab" href="#tab-closed">Chiuse</a></li>
+</ul>
+<div class="tab-content">
+    <div id="tab-summary" class="tab-pane fade in active">
+        <div class="table-responsive">
+            <table class="table table-striped">
+            <tbody>
+                {% for hunt in summary %}
+                    <tr><td>
+                        <a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a> ({{ hunt.getStatusName() }})</br>
+                        <small>di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></small>
+                    </td></tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="tab-open" class="tab-pane fade">
+        <div class="table-responsive">
+            <table class="table table-striped">
+            <tbody>
+                {% for hunt in open %}
+                    <tr><td>
+                        <a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a> ({{ hunt.getStatusName() }})</br>
+                        <small>di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></small>
+                    </td></tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="tab-closed" class="tab-pane fade">
+        <div class="table-responsive">
+            <table class="table table-striped">
+            <tbody>
+                {% for hunt in closed %}
+                    <tr><td>
+                        <a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a> ({{ hunt.getStatusName() }})</br>
+                        <small>di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></small>
+                    </td></tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+var AJAX_USER_EXISTS_PATH = '{{ path_for('ajax-user-exists') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/profile.js"></script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="well center col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div id="view-form">
+        <h2 class="text-center">Registrati</h2>
+        <form id="form-signup">
+            <div class="form-group text-danger" id="error-message"></div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                    <input type="email" class="form-control" id="email" placeholder="Email" required autofocus>
+                </div>
+                <small class="form-text text-muted">
+                    L'indirizzo email deve esistere.
+                </small>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" class="form-control" id="nickname" placeholder="Nickname" pattern="[A-Za-z0-9]{4,24}" required>
+                </div>
+                <small class="form-text text-muted">
+                    Il nickname deve essere composto da 4 a 24 caratteri alfanumerici.
+                </small>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" class="form-control" id="password" placeholder="Password" pattern=".{8,128}" required>
+                </div>
+                <small class="form-text text-muted">
+                    La password deve essere composta da 8 a 128 caratteri.
+                </small>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" class="form-control" id="repeat-password" placeholder="Ripeti password" pattern=".{8,128}" required>
+                </div>
+                <small class="form-text text-muted">
+                    La password deve essere composta da 8 a 128 caratteri.
+                </small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large">Registrati</button>
+            <span><a href="{{ path_for('signin') }}">Accedi</a></span>
+        </form>
+    </div>
+    <div id="view-done" class="text-center" style="display: none;">
+        <h2 class="text-center">Ci siamo quasi!</h2>
+        <p>A breve, riceverai tramite email le istruzioni per completare la registrazione.</p>
+        <p>Se non ricevi nulla, <a href="contact-us">contattaci</a>.</p>
+        <p><a href="{{ path_for('signin') }}">Accedi</a></p>
+    </div>
+</div>
+<script>
+var AJAX_SIGNUP_PATH = '{{ path_for('ajax-signup') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/signup.js"></script>
+{% endblock %}

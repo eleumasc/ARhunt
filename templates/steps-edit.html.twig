@@ -1,0 +1,50 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="wrap"><a href="{{ path_for('teams-list', { hunt: hunt.id }) }}">{{ team.name }}</a></li>
+        <li class="active">Percorso</li>
+    </ol>
+    <form id="form-step">
+        <div class="form-group">
+            <label for="text">Testo</label>
+            <textarea class="form-control" id="text" rows="8" required>{{ step.text }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="media">Media</label>
+            <select class="form-control" id="media">
+                <option value="">(Nessuno)</option>
+                {% for m in media %}
+                <option value="{{ m.id }}" {{ m.id == step.media ? 'selected' : '' }}>{{ m.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="takePosMap">Passo</label>
+            <div>
+                <button type="button" class="btn btn-primary" id="btn-current-position"><i class="glyphicon glyphicon-screenshot"></i></button>
+                Accuratezza: <span id="current-position-accuracy">?</span> metri
+            </div>
+            <div class="map-container">
+                <div id="takePosMap" class="map"></div>
+            </div>
+            <small class="form-text text-muted">
+                Trascina il marcatore sulla posizione desiderata.
+            </small>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Salva</button>
+        <span><a href="javascript:history.back()">Indietro</a></span>
+    </form>
+</div>
+<script>
+var ACTION = '{{ action }}',
+    AJAX_ACTION_PATH = '{{ path_for("ajax-steps-#{action}") }}',
+    TEAM_ID = '{{ team.id }}',
+    STEP_SEQUENCE = '{{ step.sequence | default('0') }}',
+    STEP_TAKE_POS = [{{ step.takeLat | default(hunt.callLat) }}, {{ step.takeLng | default(hunt.callLng) }}],
+    STEPS_LIST_PATH = '{{ path_for('steps-list', { team: team.id }) }}';
+</script>
+<script src="{{ path_for('root') }}scripts/steps-edit.js"></script>
+{% endblock %}

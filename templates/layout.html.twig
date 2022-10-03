@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>ARhunt</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Play and make outdoor treasure hunt games in augmented reality.">
+    <meta name="keywords" content="treasure,hunt,augmented,reality">
+    <meta name="author" content="Samuele Casarin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ path_for('root') }}assets/favicon.png">
+    <link rel="stylesheet" href="{{ path_for('root') }}assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ path_for('root') }}assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="{{ path_for('root') }}assets/css/leaflet.css">
+    <link rel="stylesheet" href="{{ path_for('root') }}assets/css/style.css">
+    <script src="{{ path_for('root') }}assets/js/jquery-3.2.1.min.js"></script>
+    <script src="{{ path_for('root') }}assets/js/bootstrap.min.js"></script>
+    <script src="{{ path_for('root') }}assets/js/bootbox.min.js"></script>
+    <script src="{{ path_for('root') }}assets/js/moment-with-locales.min.js"></script>
+    <script src="{{ path_for('root') }}assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="{{ path_for('root') }}assets/js/leaflet.js"></script>
+</head>
+<body>
+    <div class="header text-center">
+        <h1>ARhunt</h1>
+        <p>Caccia al tesoro in realt&agrave; aumentata.</p>
+    </div>
+    <div class="container-fluid" id="content">
+        {% block navbar %}{% endblock %}
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer text-center">
+        &copy; 2016-2017 ARhunt &middot;
+        <a href="//www.iubenda.com/privacy-policy/8212894" class="iubenda-nostyle iubenda-embed">Privacy</a> &middot;
+        <a href="{{ path_for('contact-us') }}">Contatti</a>
+    </div>
+    <script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+</body>
+</html>

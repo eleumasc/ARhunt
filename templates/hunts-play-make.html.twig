@@ -1,0 +1,22 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="active">{{ play ? 'Gioca' : 'Gestisci' }}</li>
+    </ol>
+    <div class="text-center">
+        <h1 class="wrap">{{ hunt.name }}</h1>
+        <h3 class="wrap">di <a href="{{ path_for('profile', { nickname: hunt.author }) }}">{{ hunt.author }}</a></h3>
+    </div>
+    <div id="view">Caricamento...</div>
+</div>
+<script>
+var HUNT_ID = '{{ hunt.id }}',
+    AJAX_HUNTS_STATUS_PATH = '{{ path_for('ajax-hunts-status') }}',
+    AJAX_HUNTS_VERIFY_PATH = '{{ path_for('ajax-hunts-verify') }}',
+    PLAY = {{ play ? 'true' : 'false' }};
+</script>
+<script src="{{ path_for('root') }}scripts/hunts-status.js"></script>
+{% endblock %}

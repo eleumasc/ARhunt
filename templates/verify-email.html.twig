@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="well center col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="text-center">
+        {% if result == 'ok' %}
+        <h2 class="text-center">Registrazione completata!</h2>
+        <p>Adesso &egrave; possibile effettuare l'accesso a ARHunt.</p>
+        {% else %}
+        <h2 class="text-center">Registrazione fallita!</h2>
+        <p>La verifica dell'indirizzo email non &egrave; andata a buon fine.</p>
+        {% endif %}
+        <p><a href="{{ path_for('signin') }}">Accedi</a></p>
+    </div>
+</div>
+{% endblock %}

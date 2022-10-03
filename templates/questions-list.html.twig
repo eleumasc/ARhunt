@@ -1,0 +1,65 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb">
+        <li class="wrap"><a href="{{ path_for('hunts-view', { id: hunt.id }) }}">{{ hunt.name }}</a></li>
+        <li class="wrap"><a href="{{ path_for('teams-list', { hunt: hunt.id }) }}">{{ team.name }}</a></li>
+        <li class="wrap"><a href="{{ path_for('steps-list', { team: team.id }) }}">Passo {{ step.sequence }}</a></li>
+        <li class="active">Domande</li>
+    </ol>
+    <div class="map-container">
+        <div id="stepMap" class="map"></div>
+    </div>
+    {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+    <div class="form-group text-right">
+        <button class="btn btn-success" data-action="add-question"><i class="glyphicon glyphicon-plus"></i> Nuova domanda</button>
+    </div>
+    {% endif %}
+    {% for question in questions %}
+    <div data-bind="question-{{ question.id }}">
+        <h4 class="wrap" data-bind="text">{{ question.text }}</h4>
+        {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+        <button class="btn btn-link" data-action="edit-question" data-question="{{ question.id }}" title="Modifica domanda"><i class="glyphicon glyphicon-edit"></i></button>
+        <button class="btn btn-link" data-action="delete-question" data-question="{{ question.id }}" title="Elimina domanda"><i class="glyphicon glyphicon-remove"></i></button>
+        {% endif %}
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+        <tbody>
+            {% for choice in question.choices %}
+            <tr data-bind="choice-{{ choice.id }}">
+                <td><button class="btn btn-default" data-action="toggle-choice" data-choice="{{ choice.id }}" title="Risposta esatta/sbagliata" {{ hunt.status != constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') and hunt.status != constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') ? 'disabled' : '' }}><i class="glyphicon glyphicon-{{ choice.right ? 'check' : 'unchecked' }}"></i></button></td>
+                <td data-bind="text">{{ choice.text }}</td>
+                {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+                <td>
+                    <button class="btn btn-link" data-action="edit-choice" data-choice="{{ choice.id }}" title="Modifica"><i class="glyphicon glyphicon-edit"></i></button>
+                    <button class="btn btn-link" data-action="delete-choice" data-choice="{{ choice.id }}" title="Elimina"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% if hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::EDITING') or hunt.status == constant('\\ARHunt\\Hunt\\Model\\Hunt::PUBLISHED') %}
+            <tr>
+                <td class="form-group" colspan="3"><button class="btn btn-success" data-action="add-choice" data-question="{{ question.id }}"><i class="glyphicon glyphicon-plus"></i> Nuova risposta</button></td>
+            </tr>
+            {% endif %}
+        </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+<script>
+var STEP_TEAM = '{{ step.team }}',
+    STEP_SEQUENCE = '{{ step.sequence }}',
+    STEP_TAKE_POS = [{{ step.takeLat }}, {{step.takeLng }}],
+    AJAX_QUESTIONS_ADD_PATH = '{{ path_for('ajax-questions-add') }}',
+    AJAX_QUESTIONS_EDIT_PATH = '{{ path_for('ajax-questions-edit') }}',
+    AJAX_QUESTIONS_DELETE_PATH = '{{ path_for('ajax-questions-delete') }}',
+    AJAX_CHOICES_ADD_PATH = '{{ path_for('ajax-choices-add') }}',
+    AJAX_CHOICES_EDIT_PATH = '{{ path_for('ajax-choices-edit') }}',
+    AJAX_CHOICES_DELETE_PATH = '{{ path_for('ajax-choices-delete') }}',
+    AJAX_CHOICES_TOGGLE_PATH = '{{ path_for('ajax-choices-toggle') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/questions-list.js"></script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "layout-with-navbar.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <form id="form-hunt">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" value="{{ hunt.name }}" required autofocus>
+            <small class="form-text text-muted">
+                Il nome non pu&ograve; essere vuoto e deve essere composto da max. 120 caratteri.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="description">Descrizione</label>
+            <textarea class="form-control" id="description" rows="8">{{ hunt.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="callTimeDatetimepicker">Quando?</label>
+            <div class="input-group" id="callTimeDatetimepicker">
+                <input type="text" class="form-control" required>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="callPosMap">Dove?</label>
+            <div class="map-container">
+                <div id="callPosMap" class="map"></div>
+            </div>
+            <small class="form-text text-muted">
+                Trascina il marcatore sulla posizione desiderata.
+            </small>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Salva</button>
+        {% if action != 'add' %}
+        <button type="button" class="btn btn-danger btn-large" id="delete">Elimina</button>
+        {% endif %}
+        <span><a href="javascript:history.back()">Indietro</a></span>
+    </form>
+</div>
+<script>
+var ACTION = '{{ action }}',
+    AJAX_ACTION_PATH = '{{ path_for("ajax-hunts-#{action}") }}',
+    HUNT_ID = '{{ hunt.id }}',
+    HUNT_CALL_TIME = '{{ hunt.callTime | default('') }}',
+    HUNT_CALL_POS = [{{ hunt.callLat | default('0') }}, {{ hunt.callLng | default('0') }}],
+    AJAX_HUNTS_DELETE_PATH = '{{ path_for('ajax-hunts-delete') }}',
+    HUNTS_LIST_MAKE_PATH = '{{ path_for('hunts-list-make') }}';
+</script>
+<script src="{{ path_for('root') }}scripts/hunts-edit.js"></script>
+{% endblock %}
